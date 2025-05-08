@@ -10,11 +10,18 @@ func main(){
 	api.InitDB()
 	r := gin.Default()
 
-	r.POST("/books", api.CreateBook)
-	r.GET("/books", api.GetBooks)
-	r.GET("/books/:id", api.GetBook)
-	r.PUT("/books/:id", api.UpdateBook)
-	r.DELETE("/books/:id", api.DeleteBook)
+	//Public routes
+	r.POST("token", api.GenerateJWT)
+
+	//protected routes
+	protected := r.Group("/", api.JWTAuthMiddleware())
+	{	
+	protected.POST("/books", api.CreateBook)
+	protected.GET("/books", api.GetBooks)
+	protected.GET("/books/:id", api.GetBook)
+	protected.PUT("/books/:id", api.UpdateBook)
+	protected.DELETE("/books/:id", api.DeleteBook)
+	}
 
 	r.Run(":8080")
 

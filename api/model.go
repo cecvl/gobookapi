@@ -15,6 +15,11 @@ type JsonResponse struct {
 	Data    any    `json:"data"`
 }
 
+type LoginRequest struct {
+	Username string `json:"username" binding:"required"`
+	Password string `json:"password" binding:"required"`
+}
+
 //helper function to send JSON response
 func ResponseJSON(c *gin.Context, status int, message string, data any) {
 	response := JsonResponse{
